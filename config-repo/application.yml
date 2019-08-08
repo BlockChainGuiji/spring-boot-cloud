@@ -20,7 +20,11 @@ ribbon:
 
 spring:
   rabbitmq:
-    host: rabbitmq
+    host: 10.203.72.183
+    port: 5672
+    virtual-host: /mine
+    username: mine
+    password: mine
   sleuth:
     sampler:
       percentage: 1
