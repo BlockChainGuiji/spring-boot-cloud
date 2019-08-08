@@ -3,24 +3,34 @@ server:
 
 eureka:
   instance:
-    hostname: registry
+    hostname: 127.0.0.1
     prefer-ip-address: true
     metadata-map:
       user.name: ${security.user.name}
       user.password: ${security.user.password}
   client:
     service-url:
-      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@registry:8761/eureka/
+      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@127.0.0.1:8761/eureka/
 
 spring:
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/zhangxd1989/spring-boot-cloud
+          uri: https://github.com/BlockChainGuiji/spring-boot-cloud.git
           search-paths: config-repo
+          proxy:
+            https:
+              host: 10.191.113.100
+              password: jayJAY123
+              port: 8002
+              username: xieboyun-001
   rabbitmq:
-    host: rabbitmq
+    host: 10.203.72.183
+    port: 5672
+    virtual-host: /mine
+    username: mine
+    password: mine
 
 security:
   user:
