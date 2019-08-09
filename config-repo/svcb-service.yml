@@ -10,6 +10,8 @@ eureka:
       user.password: ${security.user.password}
 
 security:
+  main:
+    allow-bean-definition-overriding: true
   user:
     name: user
     password: password
