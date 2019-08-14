@@ -6,9 +6,11 @@ server:
   port: 8040
 
 turbine:
-  stream:
-    port: 8041
-
+  combine-host-port: true
+  app-config: gateway,svca-service,svcb-service,auth-service
+  cluster-name-expression: new String("default")
+  aggregator:
+    cluster-config: default
 eureka:
   instance:
     hostname: 127.0.0.1
@@ -27,14 +29,21 @@ spring:
     virtual-host: /mine
     username: mine
     password: mine
-  boot:
-    admin:
-      routes:
-        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
-      turbine:
-        clusters: default
-        location: http://127.0.0.1:${turbine.stream.port}
-
+#boot:
+      ##    admin:
+      ##      routes:
+      ##        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
+      ##      turbine:
+    ##        clusters: default
+    ##        location: http://127.0.0.1:${turbine.stream.port}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 security:
   user:
     name: admin

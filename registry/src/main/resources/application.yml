@@ -10,7 +10,14 @@ eureka:
     fetchRegistry: false
     service-url:
       defaultZone: http://${security.user.name}:${security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 security:
   user:
     name: user
