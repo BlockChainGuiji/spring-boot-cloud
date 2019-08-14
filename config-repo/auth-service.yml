@@ -1,11 +1,14 @@
 server:
-  context-path: /uaa
+  servlet:
+    context-path: /uaa
   port: 5000
 
 management:
   security:
     enabled: false
-  context-path: /mgmt
+  server:
+    servlet:
+      context-path: /mgmt
 #  endpoints:
 #    web:
 #      exposure:
@@ -16,8 +19,8 @@ management:
 
 eureka:
   instance:
-    health-check-url-path: ${management.context-path}/actuator/health
-    status-page-url-path: ${management.context-path}/actuator/info
+    health-check-url-path: ${management.server.servlet.context-path}/actuator/health
+    status-page-url-path: ${management.server.servlet.context-path}/actuator/info
     metadata-map:
       management.context-path: ${server.context-path}${management.context-path}
 
