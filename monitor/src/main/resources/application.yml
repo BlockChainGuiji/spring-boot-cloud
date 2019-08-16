@@ -30,6 +30,7 @@ spring:
       name: admin
       password: ${MONITOR_SERVER_PASSWORD:admin}
 
+
 management:
   endpoints:
     web:
