@@ -37,4 +37,11 @@ spring:
     user:
       name: user
       password: ${CONFIG_SERVER_PASSWORD:password}
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
