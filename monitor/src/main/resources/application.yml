@@ -5,19 +5,15 @@ logging:
 server:
   port: 8040
 
-turbine:
-  combine-host-port: true
-  app-config: gateway,svca-service,svcb-service,auth-service
-  cluster-name-expression: new String("default")
-  aggregator:
-    cluster-config: default
 eureka:
   instance:
     hostname: 127.0.0.1
     prefer-ip-address: true
     metadata-map:
-      user.name: ${security.user.name}
-      user.password: ${security.user.password}
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+    instance-id: ${eureka.instance.hostname}:${server.port}
+    ip-address: ${eureka.instance.hostname}
   client:
     service-url:
       defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@127.0.0.1:8761/eureka/
@@ -29,13 +25,11 @@ spring:
     virtual-host: /mine
     username: mine
     password: mine
-#boot:
-      ##    admin:
-      ##      routes:
-      ##        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
-      ##      turbine:
-    ##        clusters: default
-    ##        location: http://127.0.0.1:${turbine.stream.port}
+  security:
+    user:
+      name: admin
+      password: ${MONITOR_SERVER_PASSWORD:admin}
+
 management:
   endpoints:
     web:
@@ -44,7 +38,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-security:
-  user:
-    name: admin
-    password: ${MONITOR_SERVER_PASSWORD:admin}
