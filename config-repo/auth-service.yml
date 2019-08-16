@@ -3,8 +3,6 @@ server:
     context-path: /uaa
   port: 5000
 
-men
-
 eureka:
   instance:
     health-check-url-path: ${server.servlet.context-path}/actuator/health
