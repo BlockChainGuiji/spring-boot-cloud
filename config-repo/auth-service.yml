@@ -1,5 +1,5 @@
 server:
-  servlet:
+#  servlet:
 #    context-path: /uaa
   port: 5000
 
