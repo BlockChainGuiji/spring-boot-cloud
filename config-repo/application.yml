@@ -31,7 +31,7 @@ spring:
     password: mine
   sleuth:
     sampler:
-      percentage: 1
+      probability: 1.0
     integration:
       enabled: false
     scheduled:
