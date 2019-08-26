@@ -39,10 +39,8 @@ spring:
 #      enabled: false
 #    scheduled:
 #      skip-pattern: "^org.*HystrixStreamTask$"
-    zipkin:
-      base-url: http://127.0.0.1:9411/ # 指定了 Zipkin 服务器的地址
-      sender:
-        type: web
+  zipkin:
+    base-url: http://127.0.0.1:9411/ # 指定了 Zipkin 服务器的地址
 
 authserver:
     hostname: 127.0.0.1
