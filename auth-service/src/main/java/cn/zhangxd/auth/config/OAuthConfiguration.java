@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
@@ -37,7 +40,8 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security)
             throws Exception {
-        security.passwordEncoder(passwordEncoder);
+        security.passwordEncoder(passwordEncoder)
+        .allowFormAuthenticationForClients();
     }
 
     @Override
@@ -46,15 +50,21 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .authenticationManager(auth)
                 .tokenStore(tokenStore())
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
         ;
+    }
+
+    @Bean
+    public ClientDetailsService clientDetails() {
+        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
+        clientDetailsService.setPasswordEncoder(passwordEncoder);
+        return clientDetailsService;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
-
-        clients.jdbc(dataSource)
-                .passwordEncoder(passwordEncoder)
+        clients.withClientDetails(clientDetails())
                 .withClient("client")
                 .secret("secret")
                 .authorizedGrantTypes("password", "refresh_token")
@@ -82,14 +92,14 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
         @Autowired
         private DataSource dataSource;
 
-//        @Override
-//        public void init(AuthenticationManagerBuilder auth) throws Exception {
-//            auth.jdbcAuthentication().dataSource(dataSource)
+        @Override
+        public void init(AuthenticationManagerBuilder auth) throws Exception {
+            auth.jdbcAuthentication().dataSource(dataSource)
 //                    .withUser("dave").password("secret").roles("USER")
 //                    .and()
 //                    .withUser("anil").password("password").roles("ADMIN")
-//            ;
-//        }
+            ;
+        }
     }
 
 }
